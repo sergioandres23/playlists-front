@@ -1,36 +1,53 @@
 /* src/app/app.component.css */
 .container {
-  max-width: 800px;
-  margin: 2rem auto;
+  max-width: 720px; /* Aún más compacto */
+  margin: 1rem auto;
   padding: 1rem;
   font-family: sans-serif;
   color: #333;
+  font-size: 13px; /* Reducimos más el tamaño de fuente base */
+}
+
+h1, h2, h3, h4 {
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 1.6rem; /* Reducido */
+}
+
+h2 {
+  font-size: 1.3rem; /* Reducido */
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.4rem; /* Reducido */
+  margin-top: 0;
+  margin-bottom: 0.8rem; /* Añadido para espaciar */
 }
 
 .card {
   background: #ffffff;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border-radius: 6px; /* Reducido */
+  padding: 0.8rem 1rem; /* Padding reducido */
+  margin-bottom: 1.2rem; /* Margen reducido */
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem; /* Reducido */
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem; /* Margen reducido */
   font-weight: bold;
 }
 
 .form-group input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.4rem; /* Padding reducido */
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 3px; /* Reducido */
   box-sizing: border-box; /* Important for width calculation */
 }
 
@@ -38,25 +55,26 @@
 .form-inline {
   display: flex;
   flex-wrap: wrap; /* Permite que los elementos pasen a la siguiente línea */
-  gap: 10px;       /* Añade espacio entre los elementos */
+  gap: 8px;       /* Añade espacio entre los elementos */
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem; /* Reducido */
 }
 
 .form-inline input {
-  flex: 1 1 150px; /* Permite que los campos crezcan y se encojan */
-  padding: 0.75rem;
+  flex: 1 1 140px; /* Reducido */
+  padding: 0.4rem; /* Padding reducido */
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 3px; /* Reducido */
 }
 
 .button, button {
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem; /* Padding reducido */
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
+  font-size: 0.9em; /* Un poco más pequeño */
   transition: background-color 0.2s;
 }
 
@@ -77,7 +95,7 @@
 }
 
 .message {
-  padding: 1rem;
+  padding: 0.8rem; /* Reducido */
   margin-bottom: 1rem;
   border-radius: 4px;
   border: 1px solid transparent;
@@ -116,12 +134,12 @@
 .divider {
   border: 0;
   border-top: 1px solid #eee;
-  margin: 2rem 0;
+  margin: 1.2rem 0; /* Margen reducido */
 }
 
 .search-result {
-  margin-top: 1.5rem;
-  padding: 1rem;
+  margin-top: 1rem; /* Reducido */
+  padding: 0.8rem; /* Reducido */
   background-color: #f8f9fa;
   border: 1px solid #e0e0e0;
   border-radius: 4px;

@@ -30,6 +30,15 @@ export class AppComponent implements OnInit {
     this.getAllPlaylists();
   }
 
+  displayMessage(text: string, type: 'success' | 'error', duration: number = 5000): void {
+    this.message = text;
+    this.messageType = type;
+    setTimeout(() => {
+      this.message = '';
+      this.messageType = null;
+    }, duration);
+  }
+
   getAllPlaylists(): void {
     this.playlistService.getAllPlaylists().subscribe({
       next: (data) => {
@@ -37,16 +46,14 @@ export class AppComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al obtener playlists:', error);
-        this.message = `Error al cargar playlists: El servidor no responde o hay un problema de red.`;
-        this.messageType = 'error';
+        this.displayMessage('Error al cargar playlists: El servidor no responde o hay un problema de red.', 'error');
       }
     });
   }
 
   findPlaylist(): void {
     if (!this.searchName.trim()) {
-      this.message = 'Por favor, introduce un nombre para buscar.';
-      this.messageType = 'error';
+      this.displayMessage('Por favor, introduce un nombre para buscar.', 'error');
       return;
     }
     this.searchedPlaylist = null;
@@ -56,14 +63,12 @@ export class AppComponent implements OnInit {
     this.playlistService.getPlaylistByName(this.searchName).subscribe({
       next: (data) => {
         this.searchedPlaylist = data;
-        this.message = `Playlist "${data.name}" encontrada.`;
-        this.messageType = 'success';
+        this.displayMessage(`Playlist "${data.name}" encontrada.`, 'success');
         this.searchName = ''; // Limpiar input
       },
       error: (error) => {
         console.error('Error al buscar playlist:', error);
-        this.message = `No se encontró la playlist "${this.searchName}".`;
-        this.messageType = 'error';
+        this.displayMessage(`Error al buscar la playlist "${this.searchName}". Es posible que no exista o que haya un problema con el servidor.`, 'error');
       }
     });
   }
@@ -76,30 +81,26 @@ export class AppComponent implements OnInit {
       this.newPlaylist.songs.push({ ...this.newSong }); // Clonar el objeto para que no se modifique al resetear
       this.newSong = { title: '', artist: '', album: '', year: undefined, genre: '' }; // Limpiar para la siguiente canción
     } else {
-      this.message = 'El título y el artista de la canción son obligatorios.';
-      this.messageType = 'error';
+      this.displayMessage('El título y el artista de la canción son obligatorios.', 'error');
     }
   }
 
   createPlaylist(): void {
     if (!this.newPlaylist.name) {
-      this.message = 'El nombre de la playlist es obligatorio.';
-      this.messageType = 'error';
+      this.displayMessage('El nombre de la playlist es obligatorio.', 'error');
       return;
     }
 
     this.playlistService.createPlaylist(this.newPlaylist).subscribe({
       next: (createdPlaylist) => {
-        this.message = `Playlist '${createdPlaylist.name}' creada exitosamente!`;
-        this.messageType = 'success';
+        this.displayMessage(`Playlist '${createdPlaylist.name}' creada exitosamente!`, 'success');
         this.newPlaylist = { name: '', description: '', songs: [] }; // Limpiar formulario
         this.newSong = { title: '', artist: '', album: '', year: undefined, genre: '' }; // Limpiar formulario de canción
         this.getAllPlaylists(); // Recargar la lista de playlists
       },
       error: (error) => {
         console.error('Error al crear playlist:', error);
-        this.message = `Error al crear playlist: ${error.error?.message || error.message}`;
-        this.messageType = 'error';
+        this.displayMessage(`Error al crear playlist: ${error.error?.message || error.message}`, 'error');
       }
     });
   }
@@ -108,8 +109,7 @@ export class AppComponent implements OnInit {
     if (confirm(`¿Estás seguro de que quieres eliminar la playlist '${name}'?`)) {
       this.playlistService.deletePlaylist(name).subscribe({
         next: () => {
-          this.message = `Playlist '${name}' eliminada exitosamente.`;
-          this.messageType = 'success';
+          this.displayMessage(`Playlist '${name}' eliminada exitosamente.`, 'success');
           this.getAllPlaylists(); // Recargar la lista
           if (this.searchedPlaylist?.name === name) {
             this.searchedPlaylist = null;
@@ -117,8 +117,7 @@ export class AppComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error al eliminar playlist:', error);
-          this.message = `Error al eliminar la playlist '${name}'. Es posible que no exista o que haya un problema con el servidor.`;
-          this.messageType = 'error';
+          this.displayMessage(`Error al eliminar la playlist '${name}'. Es posible que no exista o que haya un problema con el servidor.`, 'error');
         }
       });
     }
@@ -126,8 +125,7 @@ export class AppComponent implements OnInit {
 
   deletePlaylistByName(): void {
     if (!this.deleteName.trim()) {
-      this.message = 'Por favor, introduce un nombre para eliminar.';
-      this.messageType = 'error';
+      this.displayMessage('Por favor, introduce un nombre para eliminar.', 'error');
       return;
     }
     this.deletePlaylist(this.deleteName);
