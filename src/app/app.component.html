@@ -1,0 +1,60 @@
+<!-- src/app/app.component.html -->
+<div class="container">
+  <h1>Gestión de Playlists</h1>
+
+  <div *ngIf="message" class="message">{{ message }}</div>
+
+  <!-- Formulario para Crear Nueva Playlist -->
+  <div class="card">
+    <h2>Crear Nueva Playlist</h2>
+    <form (ngSubmit)="createPlaylist()">
+      <div class="form-group">
+        <label for="playlistName">Nombre:</label>
+        <input type="text" id="playlistName" [(ngModel)]="newPlaylist.name" name="playlistName" required>
+      </div>
+      <div class="form-group">
+        <label for="playlistDescription">Descripción:</label>
+        <input type="text" id="playlistDescription" [(ngModel)]="newPlaylist.description" name="playlistDescription">
+      </div>
+
+      <h3>Añadir Canciones</h3>
+      <div class="form-inline">
+        <input type="text" [(ngModel)]="newSong.title" name="newSongTitle" placeholder="Título de la Canción" required>
+        <input type="text" [(ngModel)]="newSong.artist" name="newSongArtist" placeholder="Artista" required>
+        <button type="button" (click)="addSongToNewPlaylist()">Añadir Canción</button>
+      </div>
+
+      <div *ngIf="newPlaylist.songs && newPlaylist.songs.length > 0">
+        <h4>Canciones a Añadir:</h4>
+        <ul>
+          <li *ngFor="let song of newPlaylist.songs">
+            {{ song.title }} - {{ song.artist }}
+          </li>
+        </ul>
+      </div>
+
+      <button type="submit" class="button primary">Crear Playlist</button>
+    </form>
+  </div>
+
+  <!-- Lista de Playlists Existentes -->
+  <div class="card">
+    <h2>Playlists Existentes</h2>
+    <div *ngIf="playlists.length === 0">No hay playlists para mostrar.</div>
+    <ul class="playlist-list">
+      <li *ngFor="let playlist of playlists" class="playlist-item">
+        <h3>{{ playlist.name }}</h3>
+        <p>{{ playlist.description }}</p>
+        <div *ngIf="playlist.songs && playlist.songs.length > 0">
+          <h4>Canciones:</h4>
+          <ul>
+            <li *ngFor="let song of playlist.songs">
+              {{ song.title }} - {{ song.artist }} ({{ song.album || 'N/A' }}, {{ song.year || 'N/A' }}, {{ song.genre || 'N/A' }})
+            </li>
+          </ul>
+        </div>
+        <button class="button danger" (click)="deletePlaylist(playlist.name)">Eliminar</button>
+      </li>
+    </ul>
+  </div>
+</div>
