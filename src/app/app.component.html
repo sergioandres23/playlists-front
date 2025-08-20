@@ -2,7 +2,7 @@
 <div class="container">
   <h1>Gestión de Playlists</h1>
 
-  <div *ngIf="message" class="message">{{ message }}</div>
+  <div *ngIf="message" class="message" [ngClass]="{ 'message-success': messageType === 'success', 'message-error': messageType === 'error' }">{{ message }}</div>
 
   <!-- Formulario para Crear Nueva Playlist -->
   <div class="card">
@@ -21,6 +21,9 @@
       <div class="form-inline">
         <input type="text" [(ngModel)]="newSong.title" name="newSongTitle" placeholder="Título de la Canción" required>
         <input type="text" [(ngModel)]="newSong.artist" name="newSongArtist" placeholder="Artista" required>
+        <input type="text" [(ngModel)]="newSong.album" name="newSongAlbum" placeholder="Álbum (opcional)">
+        <input type="number" [(ngModel)]="newSong.year" name="newSongYear" placeholder="Año (opcional)">
+        <input type="text" [(ngModel)]="newSong.genre" name="newSongGenre" placeholder="Género (opcional)">
         <button type="button" (click)="addSongToNewPlaylist()">Añadir Canción</button>
       </div>
 
@@ -35,6 +38,53 @@
 
       <button type="submit" class="button primary">Crear Playlist</button>
     </form>
+  </div>
+
+  <!-- Card para Acciones: Buscar, Eliminar, Recargar -->
+  <div class="card">
+    <h2>Acciones de Playlist</h2>
+
+    <!-- Recargar Todas -->
+    <div class="form-group">
+      <label>Refrescar la lista completa de playlists</label>
+      <button type="button" (click)="getAllPlaylists()" class="button primary">Cargar Todas</button>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Buscar por Nombre -->
+    <div class="form-group">
+      <label for="searchName">Buscar Playlist por Nombre:</label>
+      <form (ngSubmit)="findPlaylist()" class="form-inline">
+        <input type="text" id="searchName" [(ngModel)]="searchName" name="searchName" placeholder="Nombre de la playlist">
+        <button type="submit" class="button">Buscar</button>
+      </form>
+    </div>
+
+    <!-- Resultado de la Búsqueda -->
+    <div *ngIf="searchedPlaylist" class="search-result">
+      <h4>Resultado de la Búsqueda:</h4>
+      <div class="playlist-item">
+        <h3>{{ searchedPlaylist.name }}</h3>
+        <p>{{ searchedPlaylist.description }}</p>
+        <ul *ngIf="searchedPlaylist.songs && searchedPlaylist.songs.length > 0">
+          <li *ngFor="let song of searchedPlaylist.songs">
+            {{ song.title }} - {{ song.artist }} ({{ song.album || 'N/A' }}, {{ song.year || 'N/A' }}, {{ song.genre || 'N/A' }})
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Eliminar por Nombre -->
+    <div class="form-group">
+      <label for="deleteName">Eliminar Playlist por Nombre:</label>
+      <form (ngSubmit)="deletePlaylistByName()" class="form-inline">
+        <input type="text" id="deleteName" [(ngModel)]="deleteName" name="deleteName" placeholder="Nombre a eliminar">
+        <button type="submit" class="button danger">Eliminar</button>
+      </form>
+    </div>
   </div>
 
   <!-- Lista de Playlists Existentes -->

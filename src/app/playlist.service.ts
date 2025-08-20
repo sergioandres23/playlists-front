@@ -1,10 +1,9 @@
 // src/app/playlist.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../environments/environment';
 
-
+// DTOs (Data Transfer Objects) que coinciden con el backend
 export interface SongDTO {
   title: string;
   artist: string;
@@ -23,31 +22,23 @@ export interface PlaylistDTO {
   providedIn: 'root'
 })
 export class PlaylistService {
-
-  private apiUrl = `${environment.apiUrl}/lists`;
+  private apiUrl = '/api/lists'; // URL base del proxy
 
   constructor(private http: HttpClient) { }
 
-  // Método para obtener todas las playlists (no requiere autenticación)
   getAllPlaylists(): Observable<PlaylistDTO[]> {
     return this.http.get<PlaylistDTO[]>(this.apiUrl);
   }
 
-
-  createPlaylist(playlist: PlaylistDTO): Observable<PlaylistDTO> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      // Codifica en Base64 "admin:admin123" para Basic Auth
-      'Authorization': 'Basic ' + btoa('admin:admin123')
-    });
-    return this.http.post<PlaylistDTO>(this.apiUrl, playlist, { headers });
+  getPlaylistByName(name: string): Observable<PlaylistDTO> {
+    return this.http.get<PlaylistDTO>(`${this.apiUrl}/${name}`);
   }
 
-  // Opcional: para el endpoint de borrado (requiere rol ADMIN)
+  createPlaylist(playlist: PlaylistDTO): Observable<PlaylistDTO> {
+    return this.http.post<PlaylistDTO>(this.apiUrl, playlist);
+  }
+
   deletePlaylist(name: string): Observable<void> {
-    const headers = new HttpHeaders({
-      'Authorization': 'Basic ' + btoa('admin:admin123')
-    });
-    return this.http.delete<void>(`${this.apiUrl}/${name}`, { headers });
+    return this.http.delete<void>(`${this.apiUrl}/${name}`);
   }
 }
